@@ -1,17 +1,20 @@
 {
     "name": "crawler",
     "version": "0.0.1",
-    "type": "module",
     "description": "This is an example of a Crawlee project.",
     "dependencies": {
         "crawlee": "^3.0.0",
-        "playwright": "*"
+        "mysql2": "^3.4.2",
+        "playwright": "*",
+        "tiny-invariant": "^1.3.1"
     },
     "devDependencies": {
         "@apify/tsconfig": "^0.1.0",
-        "ts-node": "^10.8.0",
+        "@types/node": "^18.0.0",
+        "ts-node": "^10.9.1",
+        "tsconfig-paths": "^4.2.0",
         "typescript": "^5.0.0",
-        "@types/node": "^18.0.0"
+        "typesync": "^0.11.1"
     },
     "scripts": {
         "start": "npm run start:dev",
