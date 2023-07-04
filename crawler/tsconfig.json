@@ -1,13 +1,18 @@
 {
-    "extends": "@apify/tsconfig",
     "compilerOptions": {
-        "module": "ES2022",
-        "target": "ES2022",
-        "outDir": "dist",
-        "noUnusedLocals": false,
-        "lib": ["DOM"]
+      "target": "es2020",
+      "module": "esnext",
+      "lib": ["es2020"],
+      "esModuleInterop": true,
+      "forceConsistentCasingInFileNames": true,
+      "strict": true,
+      "skipLibCheck": true,
+      "moduleResolution": "node",
+      "sourceMap": true,
+    //   wat?
+     "allowImportingTsExtensions": true
     },
-    "include": [
-        "./src/**/*"
-    ]
-}
+    "ts-node": {
+      "esm": true
+    }
+  }
