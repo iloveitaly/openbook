@@ -1,0 +1,7 @@
+node_modules
+/.envrc
+
+dist
+apify_storage
+crawlee_storage
+storage
