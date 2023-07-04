@@ -1,18 +1,18 @@
 {
-    "compilerOptions": {
-      "target": "es2020",
-      "module": "esnext",
-      "lib": ["es2020"],
-      "esModuleInterop": true,
-      "forceConsistentCasingInFileNames": true,
-      "strict": true,
-      "skipLibCheck": true,
-      "moduleResolution": "node",
-      "sourceMap": true,
+  "compilerOptions": {
+    "target": "es2020",
+    "module": "esnext",
+    "lib": ["es2020"],
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "moduleResolution": "node",
+    "sourceMap": true,
     //   wat?
-     "allowImportingTsExtensions": true
-    },
-    "ts-node": {
-      "esm": true
-    }
+    "allowImportingTsExtensions": true
+  },
+  "ts-node": {
+    "esm": true
   }
+}

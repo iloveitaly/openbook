@@ -1,23 +1,23 @@
-import { Dataset, createPlaywrightRouter } from 'crawlee';
+import { Dataset, createPlaywrightRouter } from "crawlee"
 
-export const router = createPlaywrightRouter();
+export const router = createPlaywrightRouter()
 
 router.addDefaultHandler(async ({ enqueueLinks, log }) => {
-    log.info(`enqueueing new URLs`);
+  log.info(`enqueueing new URLs`)
 
-    await enqueueLinks({
-        // globs: ['https://crawlee.dev/**'],
-        // limit: 1000,
-        label: 'detail',
-    });
-});
+  await enqueueLinks({
+    // globs: ['https://crawlee.dev/**'],
+    // limit: 1000,
+    label: "detail",
+  })
+})
 
-router.addHandler('detail', async ({ request, page, log }) => {
-    const title = await page.title();
-    log.info(`${title}`, { url: request.loadedUrl });
+router.addHandler("detail", async ({ request, page, log }) => {
+  const title = await page.title()
+  log.info(`${title}`, { url: request.loadedUrl })
 
-    await Dataset.pushData({
-        url: request.loadedUrl,
-        title,
-    });
-});
+  await Dataset.pushData({
+    url: request.loadedUrl,
+    title,
+  })
+})
