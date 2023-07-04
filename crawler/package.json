@@ -4,6 +4,7 @@
   "description": "This is an example of a Crawlee project.",
   "author": "It's not you it's me",
   "type": "module",
+  "license": "MIT",
   "dependencies": {
     "crawlee": "^3.4.0",
     "langchain": "^0.0.102",
@@ -27,9 +28,37 @@
     "build": "tsc",
     "test": "echo \"Error: oops, the actor has no tests yet, sad!\" && exit 1"
   },
-  "license": "MIT",
+  "prettier": {
+    "semi": false,
+    "importOrderSeparation": true,
+    "importOrderSortSpecifiers": true,
+    "importOrderGroupNamespaceSpecifiers": true,
+    "importOrder": [
+      "^[:alpha].*$",
+      "^@remix(.*)$",
+      "^(@mantine|@emotion|@nivo)(.*)$",
+      "^@prisma(.*)$",
+      "^~/",
+      "./"
+    ]
+  },
+  "eslintIgnore": [
+    "/bin",
+    "/prisma/seed.ts",
+    "/node_modules",
+    "/build",
+    "/public/build",
+    "/postgres-data"
+  ],
+  "typesync": {
+    "ignorePackages": [
+      "eslint",
+      "prettier",
+      "prettier-plugin-sort-imports"
+    ]
+  },
   "engines": {
-    "node": "19.6.0",
-    "npm": "9.4.2"
+    "node": "19.1.0",
+    "npm": "9.1.2"
   }
 }
