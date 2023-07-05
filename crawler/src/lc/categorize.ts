@@ -7,15 +7,20 @@ import { PromptTemplate } from "langchain/prompts"
 
 const parser = StructuredOutputParser.fromZodSchema(
   z.object({
+    nonEnglish: z
+      .boolean()
+      .describe(
+        "Are the titles of most of hte pages in a non-English language?"
+      ),
     companyPages: z
       .array(z.string())
       .describe(
-        "URL which describes what the company does and what type of companies they invest in"
+        "URL which describes what the company does and what type of companies they invest in. Limit to two URLs."
       ),
-    sources: z
+    teamPages: z
       .array(z.string())
       .describe(
-        "Team member name, email, LinkedIn profile URL, job title, location, and other relevant information."
+        "URL which describes a individual team member or list of team members."
       ),
   })
 )
@@ -46,6 +51,7 @@ export const categorize = async (urls: PageRepresentation[]) => {
     modelName: "gpt-3.5-turbo",
     openAIApiKey: openAIAPIKey,
   })
+
   const input = await prompt.format({
     urls: JSON.stringify(urls),
   })
@@ -53,7 +59,7 @@ export const categorize = async (urls: PageRepresentation[]) => {
   const response = await model.call(input)
   const jsonResponse = await parser.parse(response)
 
-  return response
+  return jsonResponse
 }
 
 export default categorize
