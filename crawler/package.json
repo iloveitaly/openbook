@@ -9,6 +9,7 @@
   "license": "MIT",
   "dependencies": {
     "crawlee": "^3.4.0",
+    "follow-redirect-url": "file:~/Projects/javascript/follow-redirect-url",
     "langchain": "^0.0.102",
     "loglevel": "^1.8.1",
     "loglevel-plugin-prefix": "^0.8.4",
@@ -26,10 +27,12 @@
     "eslint-config-prettier": "^8.8.0",
     "eslint-gitignore": "^0.1.0",
     "prettier": "^2.8.8",
+    "require-in-the-middle": "^7.1.1",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.1.6",
-    "typesync": "^0.11.1"
+    "typesync": "^0.11.1",
+    "better-node-inspect": "file:~/Projects/javascript/better-node-inspect"
   },
   "scripts": {
     "start": "npm run start:dev",
@@ -68,7 +71,7 @@
     ]
   },
   "engines": {
-    "node": "19.1.0",
-    "npm": "9.1.2"
+    "node": "20.3.1",
+    "npm": "9.6.7"
   }
 }
