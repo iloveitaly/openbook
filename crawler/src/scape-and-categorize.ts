@@ -1,16 +1,12 @@
 // loop through database named `venture_capital_firms` and connect via a mySQL database connection
 import "better-node-inspect"
 import { expandUrl } from "follow-redirect-url"
-import invariant from "tiny-invariant"
 
 import { addProtocolIfMissing } from "./follow_url_redirect_protocols.js"
 import categorize from "./lc/categorize.js"
 import crawl from "./main.js"
-import mysql, { RowDataPacket } from "mysql2/promise"
-
-let connection: mysql.Connection
-const mysqlUrl = process.env.MYSQL_DATABASE_URL ?? null
-invariant(mysqlUrl, "MYSQL_DATABASE_URL is not defined")
+import { getClient } from "./mysql.js"
+import { RowDataPacket } from "mysql2/promise"
 
 async function processVCRow(row: RowDataPacket) {
   const url = row.url
@@ -49,21 +45,17 @@ async function processVCRow(row: RowDataPacket) {
 }
 
 const run = async () => {
-  // mysql2 can take the FQDN, nice!
-  connection = await mysql.createConnection(mysqlUrl)
-
-  console.log("Connected!")
-
   // const sqlQuery = "SELECT * FROM venture_capital_firms"
   const sqlQuery =
     "SELECT * FROM venture_capital_firms WHERE scrape_categorization IS NULL ORDER BY RAND() LIMIT 1"
-  const [rows] = await connection.execute<RowDataPacket[]>(sqlQuery)
+  const [rows] = await (await getClient()).execute<RowDataPacket[]>(sqlQuery)
 
   for (const row of rows) {
     await processVCRow(row)
   }
 
-  await connection.end()
+  // TODO can we do this automatically?
+  // await connection.end()
 }
 
 run()
