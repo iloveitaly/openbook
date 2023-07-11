@@ -8,6 +8,7 @@
   "type": "module",
   "license": "MIT",
   "dependencies": {
+    "commander": "^11.0.0",
     "crawlee": "^3.4.0",
     "follow-redirect-url": "file:~/Projects/javascript/follow-redirect-url",
     "langchain": "^0.0.102",
@@ -41,6 +42,7 @@
     "require-in-the-middle": "^7.1.1",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.2.0",
+    "tsx": "^3.12.7",
     "typescript": "^5.1.6",
     "typesync": "^0.11.1"
   },
