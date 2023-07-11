@@ -1,9 +1,8 @@
 // loop through database named `venture_capital_firms` and connect via a mySQL database connection
-import "better-node-inspect"
+import extractTeamMemberInformation from "~/lc/team"
+import { log } from "~/logging"
+import { getClient } from "~/mysql"
 
-import extractTeamMemberInformation from "./src/lc/team.js"
-import { log } from "./src/logging.js"
-import { getClient } from "./src/mysql.js"
 import { RowDataPacket } from "mysql2/promise"
 
 async function processCategorizedRow(row: RowDataPacket) {
@@ -30,7 +29,7 @@ async function processCategorizedRow(row: RowDataPacket) {
   ])
 }
 
-const run = async () => {
+export const run = async () => {
   const sqlQuery =
     "SELECT * FROM venture_capital_firms WHERE scrape_categorization IS NOT NULL AND team_members IS NULL ORDER BY RAND() LIMIT 1"
   const [rows] = await (await getClient()).execute<RowDataPacket[]>(sqlQuery)
@@ -40,4 +39,4 @@ const run = async () => {
   }
 }
 
-run()
+export default run

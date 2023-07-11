@@ -1,11 +1,11 @@
 // loop through database named `venture_capital_firms` and connect via a mySQL database connection
-import "better-node-inspect"
 import { expandUrl } from "follow-redirect-url"
 
-import { addProtocolIfMissing } from "./follow_url_redirect_protocols.js"
-import categorize from "./lc/categorize.js"
-import crawl from "./main.js"
-import { getClient } from "./mysql.js"
+import { addProtocolIfMissing } from "~/follow_url_redirect_protocols"
+import categorize from "~/lc/categorize.js"
+import crawl from "~/main"
+import { getClient } from "~/mysql"
+
 import { RowDataPacket } from "mysql2/promise"
 
 async function processVCRow(row: RowDataPacket) {
@@ -44,7 +44,7 @@ async function processVCRow(row: RowDataPacket) {
   )
 }
 
-const run = async () => {
+export const run = async () => {
   // const sqlQuery = "SELECT * FROM venture_capital_firms"
   const sqlQuery =
     "SELECT * FROM venture_capital_firms WHERE scrape_categorization IS NULL ORDER BY RAND() LIMIT 1"
@@ -58,4 +58,4 @@ const run = async () => {
   // await connection.end()
 }
 
-run()
+export default run
