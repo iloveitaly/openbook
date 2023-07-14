@@ -5,8 +5,6 @@ import scrapeTeam from "~/commands/scrape-team"
 
 const program = new Command()
 
-debugger
-
 program
   .command("scrape-companies")
   .description("scrape company sites and categorize pages")

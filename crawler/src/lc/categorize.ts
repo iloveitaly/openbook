@@ -10,7 +10,7 @@ const parser = StructuredOutputParser.fromZodSchema(
     nonEnglish: z
       .boolean()
       .describe(
-        "Are the titles of most of hte pages in a non-English language?"
+        "Are the titles of most of the pages in a non-English language?"
       ),
     companyPages: z
       .array(z.string())
