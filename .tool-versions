@@ -1,4 +1,5 @@
 python 3.11.4
 poetry 1.5.1
 nodejs 20.3.1
-bun 0.6.12
+pnpm 8.6.7
+bun 0.6.14
