@@ -5,7 +5,7 @@ import { getClient } from "~/mysql"
 
 import { RowDataPacket } from "mysql2/promise"
 
-const connection = await getClient()
+let connection: Awaited<ReturnType<typeof getClient>>
 
 async function processCategorizedRow(row: RowDataPacket) {
   const categorization = row.scrape_categorization
@@ -30,13 +30,19 @@ async function processCategorizedRow(row: RowDataPacket) {
 }
 
 export const run = async () => {
+  connection = await getClient()
+
   const sqlQuery =
-    "SELECT * FROM venture_capital_firms WHERE scrape_categorization IS NOT NULL AND team_members IS NULL ORDER BY RAND() LIMIT 1"
+    " SELECT * FROM venture_capital_firms WHERE url = 'earlybird.com'"
+  // const sqlQuery =
+  //   "SELECT * FROM venture_capital_firms WHERE scrape_categorization IS NOT NULL AND team_members IS NULL ORDER BY RAND() LIMIT 1"
   const [rows] = await connection.execute<RowDataPacket[]>(sqlQuery)
 
   for (const row of rows) {
     await processCategorizedRow(row)
   }
+
+  await connection.end()
 }
 
 export default run
