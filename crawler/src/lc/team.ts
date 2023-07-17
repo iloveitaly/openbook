@@ -4,10 +4,12 @@ import { z } from "zod"
 import { calculateMaxTokens } from "langchain/base_language"
 import { PlaywrightWebBaseLoader } from "langchain/document_loaders/web/playwright"
 import { OpenAI } from "langchain/llms/openai"
-import { StructuredOutputParser } from "langchain/output_parsers"
+import {
+  OutputFixingParser,
+  StructuredOutputParser,
+} from "langchain/output_parsers"
 import { PromptTemplate } from "langchain/prompts"
 
-import type { TiktokenModel } from "langchain/base_language"
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter"
 import { log } from "../logging.js"
 import { convertToMarkdown } from "../markdown.js"
@@ -39,23 +41,6 @@ const prompt = new PromptTemplate({
 async function extractUrlContents(url: string) {
   log.debug("extracting contents from url", { url })
 
-  // const loader = new PlaywrightWebBaseLoader(url, {
-  //   launchOptions: {
-  //     headless: true,
-  //   },
-
-  //   gotoOptions: {
-  //     waitUntil: "domcontentloaded",
-  //   },
-
-  //   async evaluate(page: Page, browser: Browser) {
-  //     return page.evaluate(() => {
-  //       debugger
-  //       return document.body.innerText
-  //     })
-  //   },
-  // })
-
   const loader = new PlaywrightWebBaseLoader(url)
   const docs = await loader.load()
 
@@ -66,10 +51,9 @@ async function extractUrlContents(url: string) {
 }
 
 export async function extractTeamMemberInformation(url: string) {
+  // TODO refactor once the typing change is in place
   const openAIAPIKey = process.env.OPENAI_API_KEY
   invariant(openAIAPIKey, "OPENAI_API_KEY is not set")
-
-  const modelName: TiktokenModel = "gpt-3.5-turbo-16k"
 
   // TODO should be centralized?
   const model = new OpenAI({
@@ -77,7 +61,7 @@ export async function extractTeamMemberInformation(url: string) {
     // TODO should be able to use
     verbose: true,
     maxTokens: -1,
-    modelName: modelName,
+    modelName: "gpt-3.5-turbo-16k",
     openAIApiKey: openAIAPIKey,
   })
 
@@ -88,7 +72,7 @@ export async function extractTeamMemberInformation(url: string) {
   const modelTokenLimit = await calculateMaxTokens({
     // TODO this is not exactly right, it includes the variables + format instructions as a variable
     prompt: renderedEmptyPrompt,
-    modelName: modelName,
+    modelName: model.modelName,
   })
 
   const tokenToCharacterBuffer = 100 * 4
@@ -105,7 +89,6 @@ export async function extractTeamMemberInformation(url: string) {
     chunkSize: maxDocumentCharacters,
     chunkOverlap: chunkOverlap,
   })
-  debugger
 
   const markdownDocuments = await splitter.createDocuments([
     pageContentsAsMarkdown.value,
@@ -114,17 +97,26 @@ export async function extractTeamMemberInformation(url: string) {
   const responses = []
 
   for (const document of markdownDocuments) {
-    debugger
-
     const renderedPrompt = await prompt.format({
-      pageContents: document,
+      // TODO without the `pageContent` reference `[Object object]` will be passed to openai
+      pageContents: document.pageContent,
     })
 
     const responseWithCodeblock = await model.call(renderedPrompt)
-    const jsonResponse = await parser.parse(responseWithCodeblock)
+    let jsonResponse: Awaited<ReturnType<typeof parser.parse>>
+
+    try {
+      jsonResponse = await parser.parse(responseWithCodeblock)
+    } catch (e) {
+      // if the number of responses exceeds the token window, then we need to ask the LLM to fix the output
+      const fixParser = OutputFixingParser.fromLLM(model, parser)
+      jsonResponse = await fixParser.parse(responseWithCodeblock)
+    }
+
     responses.push(jsonResponse)
   }
 
+  // if there are multiple responses, we need to dedup the results since we have a token window overlap
   if (responses.flat().length > 1) {
     debugger
   }
