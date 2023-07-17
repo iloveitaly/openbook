@@ -2,11 +2,11 @@
 import rehypeParse from "rehype-parse"
 import rehypeRemark from "rehype-remark"
 import rehypeRemoveComments from "rehype-remove-comments"
+import rehypeRemoveImages from "rehype-remove-images"
 import rehypeStringify from "rehype-stringify"
 import remarkStringify from "remark-stringify"
 import { unified } from "unified"
 import { log } from "~/logging.js"
-import rehypeRemoveImages from "./rehype-remove-images"
 
 export async function convertToMarkdown(htmlString: string) {
   log.debug(`converting html to markdown`)
