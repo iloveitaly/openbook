@@ -49,7 +49,7 @@ async function processVCRow(row: RowDataPacket) {
   }
 
   await connection.query(
-    "UPDATE venture_capital_firms SET scrape_categorization = ? WHERE url = ?",
+    "UPDATE venture_capital_firms SET scrape_categorization_at = NOW(), scrape_categorization = ? WHERE url = ?",
     [JSON.stringify(scrapeCategorization), row.url]
   )
 }
