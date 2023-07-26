@@ -21,10 +21,10 @@ const parser = StructuredOutputParser.fromZodSchema(
       role: z.string().describe("Official role or title of the team member"),
       roleDescription: z
         .string()
-        .describe("Summary of what this member does in less than 350 words"),
+        .describe("Summary of what this member does in less than 50 words"),
       email: z.string().describe("Email of the team member"),
-      twitter: z.string().describe("Twitter handle of the team member"),
-      linkedin: z.string().describe("LinkedIn handle of the team member"),
+      twitter: z.string().describe("Twitter url of the team member"),
+      linkedin: z.string().describe("LinkedIn url of the team member"),
     })
   )
 )
@@ -33,7 +33,7 @@ const formatInstructions = parser.getFormatInstructions()
 
 const prompt = new PromptTemplate({
   template:
-    "This page contains information on one or more team members:\n```json\n{pageContents}\n```\n\n{format_instructions}",
+    "This webpage, formatted as markdown, could contain information on one or more team members. If you cannot find any team members, respond with an empty array.\n```json\n{pageContents}\n```\n\n{format_instructions}",
   inputVariables: ["pageContents"],
   partialVariables: { format_instructions: formatInstructions },
 })
@@ -47,10 +47,27 @@ async function extractUrlContents(url: string) {
   // Extracted contents from the HTML page
   const extractedContents = docs[0].pageContent
   const markdownContents = await convertToMarkdown(extractedContents)
+  debugger
   return markdownContents
 }
 
-export async function extractTeamMemberInformation(url: string) {
+// type Id<T> = T extends object ? {} & { [P in keyof T]: Id<T[P]> } : T
+// expands object types one level deep
+type Expand<T> = T extends infer O ? { [K in keyof O]: O[K] } : never
+type ExpandRecursively<T> = T extends object
+  ? T extends infer O
+    ? { [K in keyof O]: ExpandRecursively<O[K]> }
+    : never
+  : T
+
+export async function extractTeamMemberInformationFromUrl(url: string) {
+  const pageContentsAsMarkdown = String((await extractUrlContents(url)).value)
+  return await extractTeamMemberInformation(pageContentsAsMarkdown)
+}
+
+export async function extractTeamMemberInformation(
+  pageContentsAsMarkdown: string
+) {
   // TODO refactor once the typing change is in place
   const openAIAPIKey = process.env.OPENAI_API_KEY
   invariant(openAIAPIKey, "OPENAI_API_KEY is not set")
@@ -65,22 +82,28 @@ export async function extractTeamMemberInformation(url: string) {
     openAIApiKey: openAIAPIKey,
   })
 
+  type ExpandedParams = ExpandRecursively<
+    ConstructorParameters<typeof OpenAI>[0]
+  >
+
   const renderedEmptyPrompt = await prompt.format({
     pageContents: [],
   })
 
+  // TODO we really just want the total tokens consumed by the empty prompt based on the model-specific calculation
+  //      this would enable us to drop to a model variant with a lower token window if we needed to
   const modelTokenLimit = await calculateMaxTokens({
     // TODO this is not exactly right, it includes the variables + format instructions as a variable
     prompt: renderedEmptyPrompt,
     modelName: model.modelName,
   })
 
-  const tokenToCharacterBuffer = 100 * 4
+  const charactersPerToken = 4
+  const tokenToCharacterBuffer = 100 * charactersPerToken
   const chunkOverlap = 1000
   const maxDocumentCharacters =
-    (modelTokenLimit - tokenToCharacterBuffer) * 4 - chunkOverlap
-
-  const pageContentsAsMarkdown = await extractUrlContents(url)
+    (modelTokenLimit - tokenToCharacterBuffer) * charactersPerToken -
+    chunkOverlap
 
   // TODO langchainjs does not split on tokens unless you use a token-based splitter, which is not aware of markdown
   //      best alternative is to estimate the character size add in some buffer, and hope for the best
@@ -91,14 +114,14 @@ export async function extractTeamMemberInformation(url: string) {
   })
 
   const markdownDocuments = await splitter.createDocuments([
-    pageContentsAsMarkdown.value,
+    pageContentsAsMarkdown,
   ])
 
   const responses = []
 
   for (const document of markdownDocuments) {
     const renderedPrompt = await prompt.format({
-      // TODO without the `pageContent` reference `[Object object]` will be passed to openai
+      // TODO without the `pageContent` reference `[Object object]` will be passed to openai and there's not an easy way to know about it
       pageContents: document.pageContent,
     })
 
@@ -108,10 +131,10 @@ export async function extractTeamMemberInformation(url: string) {
     try {
       jsonResponse = await parser.parse(responseWithCodeblock)
     } catch (e) {
-      // if the number of responses exceeds the token window, then we need to ask the LLM to fix the output
-      const fixParser = OutputFixingParser.fromLLM(model, parser)
-      jsonResponse = await fixParser.parse(responseWithCodeblock)
+      jsonResponse = await fixTruncatedJson(model, responseWithCodeblock)
     }
+
+    debugger
 
     responses.push(jsonResponse)
   }
@@ -125,3 +148,12 @@ export async function extractTeamMemberInformation(url: string) {
 }
 
 export default extractTeamMemberInformation
+
+async function fixTruncatedJson(model: OpenAI, invalidJsonString: string) {
+  log.debug("output parser failed, attempting to fix")
+
+  // if the number of responses exceeds the token window, then we need to ask the LLM to fix the output
+  const fixParser = OutputFixingParser.fromLLM(model, parser)
+  const jsonResponse = await fixParser.parse(invalidJsonString)
+  return jsonResponse
+}

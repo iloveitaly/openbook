@@ -13,6 +13,7 @@ export default defineConfig({
     globals: true,
     mockReset: true,
     restoreMocks: true,
+    threads: false,
     // environment: "happy-dom",
     // setupFiles: ["./test/setup-test-env.ts"],
     // include: ["./app/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
