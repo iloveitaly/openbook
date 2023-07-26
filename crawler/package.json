@@ -44,14 +44,16 @@
     "tsconfig-paths": "^4.2.0",
     "tsx": "^3.12.7",
     "typescript": "^5.1.6",
-    "typesync": "^0.11.1"
+    "typesync": "^0.11.1",
+    "vite-tsconfig-paths": "^4.2.0",
+    "vitest": "^0.33.0"
   },
   "scripts": {
     "start": "npm run start:dev",
     "start:prod": "node dist/commands.js",
     "start:dev": "ts-node-esm -T src/commands.ts",
     "build": "tsc",
-    "test": "echo \"Error: oops, the actor has no tests yet, sad!\" && exit 1"
+    "test": "vitest"
   },
   "prettier": {
     "semi": false,
