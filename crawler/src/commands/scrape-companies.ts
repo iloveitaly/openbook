@@ -7,6 +7,7 @@ import crawl from "~/main"
 import { getClient } from "~/mysql"
 
 import { RowDataPacket } from "mysql2/promise"
+import { log } from "~/logging"
 
 let connection: Awaited<ReturnType<typeof getClient>>
 
@@ -36,13 +37,23 @@ async function processVCRow(row: RowDataPacket) {
 
     const urlList = await crawl(expandedUrl)
 
-    if (urlList.length <= 1) {
+    if (urlList.length === 0) {
       scrapeCategorization = {
         companyPages: [],
         teamPages: [],
-        singleURL: urlList[0].url,
+        singleURL: true,
+        urls: [expandedUrl],
+      }
+    } else if (urlList.length <= 1) {
+      scrapeCategorization = {
+        companyPages: [],
+        teamPages: [],
+        singleURL: true,
+        urls: [urlList[0], expandedUrl],
       }
     } else {
+      log.info("categorizing urls")
+
       const categorizedUrls = await categorize(urlList as any)
       scrapeCategorization = categorizedUrls
     }
