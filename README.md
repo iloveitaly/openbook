@@ -28,6 +28,12 @@ Pull the dolthub database:
 dolt clone iloveitaly/venture_capital_firms .
 ```
 
+Run a dolthub server (probably in a separate tab):
+
+```shell
+dolt sql-server
+```
+
 Install node modules
 
 ```shell
