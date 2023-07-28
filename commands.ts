@@ -37,11 +37,4 @@ const commandScrapeTeam = program
 addCommonOptions(commandScrapeCompanies)
 addCommonOptions(commandScrapeTeam)
 
-program
-  .command("denormalize-team")
-  .description("denormalize team command")
-  .action(() => {
-    console.log("Running denormalize team command")
-  })
-
 program.parse(process.argv)
