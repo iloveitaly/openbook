@@ -1,0 +1,29 @@
+- [ ] Web UI for easy searching and access
+- [ ] is this is a foreign language? 'https://www.coopercapital.org/'
+- [ ] handle pages which 404 and try non-www version on the root url when expanding the url
+- [ ] dedup content, currently this is really naive
+- [ ] switch model based on context size to avoid using 16k for everything
+  - [ ] openai.ts started doing this, but need to finish
+- [ ] extract typing helpers into a separate file
+- [ ] don't crawl PDFs
+
+## company information
+
+What data should we get about companies via GPT?
+
+- location
+- type: private equity, venture capital
+-
+
+## outcome
+
+- [ ] publish dataset to dolthub
+- [ ] can we convert the data to sqlite very easily?
+- [ ] publish code to an open source repo
+
+## dev
+
+- https://github.com/mysticatea/eslint-gitignore integrate into eslint config
+- https://github.com/prettier/prettier/issues/3460#issuecomment-1596130464 integrate into prettier
+- `npm link ~/Projects/javascript/better-node-repl` https://stackoverflow.com/questions/14381898/local-dependency-in-package-json
+- stop removing imports when code is commented out
