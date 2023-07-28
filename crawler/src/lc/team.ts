@@ -29,9 +29,13 @@ const parser = StructuredOutputParser.fromZodSchema(
   )
 )
 
+// extract the type of the element of the parser zod array
+export type ScrapedPerson = z.infer<(typeof parser)["schema"]>[0]
+
 const formatInstructions = parser.getFormatInstructions()
 
 const prompt = new PromptTemplate({
+  // this prompt is really important! Without explicit instructions it will return garbage stuff
   template:
     "This webpage, formatted as markdown, could contain information on one or more team members. If you cannot find any team members, respond with an empty array.\n```json\n{pageContents}\n```\n\n{format_instructions}",
   inputVariables: ["pageContents"],
@@ -139,15 +143,8 @@ export async function extractTeamMemberInformation(
     responses.push(jsonResponse)
   }
 
-  // if there are multiple responses, we need to dedup the results since we have a token window overlap
-  if (responses.flat().length > 1) {
-    debugger
-  }
-
   return responses.flat()
 }
-
-export default extractTeamMemberInformation
 
 async function fixTruncatedJson(model: OpenAI, invalidJsonString: string) {
   log.debug("output parser failed, attempting to fix")
@@ -157,3 +154,5 @@ async function fixTruncatedJson(model: OpenAI, invalidJsonString: string) {
   const jsonResponse = await fixParser.parse(invalidJsonString)
   return jsonResponse
 }
+
+export default extractTeamMemberInformationFromUrl
