@@ -1,0 +1,10 @@
+{
+  "recommendations": [
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    "meganrogge.template-string-converter",
+    "formulahendry.auto-rename-tag",
+    "ZixuanChen.vitest-explorer"
+  ],
+  "unwantedRecommendations": ["firsttris.vscode-jest-runner"]
+}

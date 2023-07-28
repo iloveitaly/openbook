@@ -1,0 +1,32 @@
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true,
+    "source.organizeImports": true
+  },
+  "cSpell.ignorePaths": [
+    "package.json",
+    "package-lock.json",
+    "node_modules",
+    "vscode-extension",
+    ".git/objects",
+    ".vscode",
+    ".vscode-insiders",
+    ".depcheckrc"
+  ],
+  // https://github.com/streetsidesoftware/vscode-spell-checker/issues/225
+  "cSpell.ignoreRegExpList": ["/from\\s+(['\"]).*\\1/"],
+  "cSpell.words": [
+    "typecheck",
+    "vitest",
+    "depcheck",
+    "backoff",
+    "faiss",
+    "dtype",
+    "openai",
+    "chatgpt",
+    "retryable",
+    "openapi"
+  ]
+}
