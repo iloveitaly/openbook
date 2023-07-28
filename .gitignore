@@ -1,0 +1,12 @@
+node_modules
+/.envrc
+/.dolt
+/scratch
+
+dist
+apify_storage
+crawlee_storage
+storage
+
+.node_repl_history
+.sqlhistory
