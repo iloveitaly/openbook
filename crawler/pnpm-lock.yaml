@@ -12,8 +12,8 @@ dependencies:
     specifier: ^3.4.2
     version: 3.4.2(playwright@1.36.2)
   follow-redirect-url:
-    specifier: file:~/Projects/javascript/follow-redirect-url
-    version: file:../../javascript/follow-redirect-url
+    specifier: github:iloveitaly/follow-redirect-url#custom
+    version: github.com/iloveitaly/follow-redirect-url/c114d73e1ef44f462da219c7536cb5b4e750a34d
   hast-util-is-element:
     specifier: ^2.1.3
     version: 2.1.3
@@ -27,6 +27,9 @@ dependencies:
     specifier: ^0.8.4
     version: 0.8.4
   mdast-util-from-markdown:
+    specifier: ^2.0.0
+    version: 2.0.0
+  mdast-util-gfm-table:
     specifier: ^2.0.0
     version: 2.0.0
   mysql2:
@@ -45,8 +48,8 @@ dependencies:
     specifier: ^5.0.0
     version: 5.0.0
   rehype-remove-images:
-    specifier: file:~/Projects/javascript/rehype-remove-images
-    version: file:../../javascript/rehype-remove-images
+    specifier: ^1.1.0
+    version: 1.1.0
   rehype-stringify:
     specifier: ^9.0.3
     version: 9.0.3
@@ -92,8 +95,8 @@ devDependencies:
     specifier: ^20.4.5
     version: 20.4.5
   better-node-inspect:
-    specifier: file:~/Projects/javascript/better-node-inspect
-    version: file:../../javascript/better-node-inspect
+    specifier: ^0.1.0
+    version: 0.1.0
   eslint:
     specifier: ^8.45.0
     version: 8.45.0
@@ -1488,6 +1491,11 @@ packages:
 
   /base64-js@1.5.1:
     resolution: {integrity: sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==}
+
+  /better-node-inspect@0.1.0:
+    resolution: {integrity: sha512-Jyn8CIeuV4K5FWgLim9Jf4lEfzeA3hvPxotVq1e6paiiKuhbv6t5y8Gx0atPKXHbBBqnmOu8eVtzhA9YreeUCA==}
+    hasBin: true
+    dev: true
 
   /binary-extensions@2.2.0:
     resolution: {integrity: sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==}
@@ -3889,6 +3897,10 @@ packages:
     resolution: {integrity: sha512-CkYQrPYZfWnu/DAmVCpTSX/xHpKZ80eKh2lAkyA6AJTef6bW+6JpbQZN5rofum7da+SyN1bi5ctTm+lTfcCW3g==}
     dev: false
 
+  /markdown-table@3.0.3:
+    resolution: {integrity: sha512-Z1NL3Tb1M9wH4XESsCDEksWoKTdlUafKc4pt0GRwjUyXaCFZ+dc3g2erqB6zm3szA2IUSi7VnPI+o/9jnxh9hw==}
+    dev: false
+
   /md5@2.3.0:
     resolution: {integrity: sha512-T1GITYmFaKuO91vxyoQMFETst+O71VUPEU3ze5GNzDm0OWdP8v1ziTaAEPUr/3kLsY3Sftgz242A1SetQiDL7g==}
     dependencies:
@@ -3943,11 +3955,30 @@ packages:
       - supports-color
     dev: false
 
+  /mdast-util-gfm-table@2.0.0:
+    resolution: {integrity: sha512-78UEvebzz/rJIxLvE7ZtDd/vIQ0RHv+3Mh5DR96p7cS7HsBhYIICDBCu8csTNWNO6tBWfqXPWekRuj2FNOGOZg==}
+    dependencies:
+      '@types/mdast': 4.0.0
+      devlop: 1.1.0
+      markdown-table: 3.0.3
+      mdast-util-from-markdown: 2.0.0
+      mdast-util-to-markdown: 2.1.0
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
   /mdast-util-phrasing@3.0.1:
     resolution: {integrity: sha512-WmI1gTXUBJo4/ZmSk79Wcb2HcjPJBzM1nlI/OUWA8yk2X9ik3ffNbBGsU+09BFmXaL1IBb9fiuvq6/KMiNycSg==}
     dependencies:
       '@types/mdast': 3.0.11
       unist-util-is: 5.2.1
+    dev: false
+
+  /mdast-util-phrasing@4.0.0:
+    resolution: {integrity: sha512-xadSsJayQIucJ9n053dfQwVu1kuXg7jCTdYsMK8rqzKZh52nLfSH/k0sAxE0u+pj/zKZX+o5wB+ML5mRayOxFA==}
+    dependencies:
+      '@types/mdast': 4.0.0
+      unist-util-is: 6.0.0
     dev: false
 
   /mdast-util-to-hast@12.3.0:
@@ -3973,6 +4004,19 @@ packages:
       mdast-util-to-string: 3.2.0
       micromark-util-decode-string: 1.1.0
       unist-util-visit: 4.1.2
+      zwitch: 2.0.4
+    dev: false
+
+  /mdast-util-to-markdown@2.1.0:
+    resolution: {integrity: sha512-SR2VnIEdVNCJbP6y7kVTJgPLifdr8WEU440fQec7qHoHOUz/oJ2jmNRqdDQ3rbiStOXb2mCDGTuwsK5OPUgYlQ==}
+    dependencies:
+      '@types/mdast': 4.0.0
+      '@types/unist': 3.0.0
+      longest-streak: 3.1.0
+      mdast-util-phrasing: 4.0.0
+      mdast-util-to-string: 4.0.0
+      micromark-util-decode-string: 2.0.0
+      unist-util-visit: 5.0.0
       zwitch: 2.0.4
     dev: false
 
@@ -5086,6 +5130,13 @@ packages:
       unist-util-filter: 4.0.1
     dev: false
 
+  /rehype-remove-images@1.1.0:
+    resolution: {integrity: sha512-er1NYdVpJUT8jX0spbMPca2/7nHkV8nY0vXthYe6XM3xqZC5nzR1Q++yi+hJUo6wgHvg+ZQXNo+g6Rtq0Dwvzw==}
+    dependencies:
+      hast-util-is-element: 2.1.3
+      unist-util-remove: 4.0.0
+    dev: false
+
   /rehype-stringify@9.0.3:
     resolution: {integrity: sha512-kWiZ1bgyWlgOxpqD5HnxShKAdXtb2IUljn3hQAhySeak6IOQPPt6DeGnsIh4ixm7yKJWzm8TXFuC/lPfcWHJqw==}
     dependencies:
@@ -5827,6 +5878,14 @@ packages:
       unist-util-visit-parents: 5.1.3
     dev: false
 
+  /unist-util-visit@5.0.0:
+    resolution: {integrity: sha512-MR04uvD+07cwl/yhVuVWAtw+3GOR/knlL55Nd/wAdblk27GCVt3lqpTivy/tkJcZoNPzTwS1Y+KMojlLDhoTzg==}
+    dependencies:
+      '@types/unist': 3.0.0
+      unist-util-is: 6.0.0
+      unist-util-visit-parents: 6.0.1
+    dev: false
+
   /universalify@0.2.0:
     resolution: {integrity: sha512-CJ1QgKmNg3CwvAv/kOFmtnEN05f0D/cn9QntgNOQlQF9dgvVTHj3t+8JPdjqawCHk7V/KA+fbUqzZ9XWhcqPUg==}
     engines: {node: '>= 4.0.0'}
@@ -6267,32 +6326,6 @@ packages:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
     dev: false
 
-  file:../../javascript/better-node-inspect:
-    resolution: {directory: ../../javascript/better-node-inspect, type: directory}
-    name: better-node-inspect
-    engines: {node: '>= 20'}
-    hasBin: true
-    dev: true
-
-  file:../../javascript/follow-redirect-url:
-    resolution: {directory: ../../javascript/follow-redirect-url, type: directory}
-    name: follow-redirect-url
-    engines: {node: '>=10 <21.0.0'}
-    hasBin: true
-    dependencies:
-      node-fetch: 2.6.12
-    transitivePeerDependencies:
-      - encoding
-    dev: false
-
-  file:../../javascript/rehype-remove-images:
-    resolution: {directory: ../../javascript/rehype-remove-images, type: directory}
-    name: rehype-remove-images
-    dependencies:
-      hast-util-is-element: 2.1.3
-      unist-util-remove: 4.0.0
-    dev: false
-
   git@github.com+stainless-sdks/rocket-reach-node/d83150f57575584de9d4b216999f4cf8873f6ebd:
     resolution: {commit: d83150f57575584de9d4b216999f4cf8873f6ebd, repo: git@github.com:stainless-sdks/rocket-reach-node.git, type: git}
     name: rocket-reach
@@ -6311,4 +6344,16 @@ packages:
     transitivePeerDependencies:
       - encoding
       - supports-color
+    dev: false
+
+  github.com/iloveitaly/follow-redirect-url/c114d73e1ef44f462da219c7536cb5b4e750a34d:
+    resolution: {tarball: https://codeload.github.com/iloveitaly/follow-redirect-url/tar.gz/c114d73e1ef44f462da219c7536cb5b4e750a34d}
+    name: follow-redirect-url
+    version: 2.0.1
+    engines: {node: '>=10 <21.0.0'}
+    hasBin: true
+    dependencies:
+      node-fetch: 2.6.12
+    transitivePeerDependencies:
+      - encoding
     dev: false
