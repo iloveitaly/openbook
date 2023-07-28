@@ -74,7 +74,7 @@ export const run = async ({
 }) => {
   connection = await getClient()
 
-  if (limit === null || limit < 1) {
+  if (limit === null || limit === undefined || limit < 1) {
     limit = 1
   }
 

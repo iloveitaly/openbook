@@ -69,7 +69,7 @@ export const run = async ({
   connection = await getClient()
 
   // use a limit default of 1
-  if (limit === null || limit < 1) {
+  if (limit === undefined || limit === null || limit < 1) {
     limit = 1
   }
 
@@ -81,8 +81,11 @@ export const run = async ({
     sqlQuery = `
     SELECT * FROM venture_capital_firms
     WHERE
-    scrape_categorization IS NOT NULL AND
-    team_members IS NULL ORDER BY RAND() LIMIT ${limit}
+      scrape_categorization IS NOT NULL AND
+      scrape_categorization->>'$.error' IS NULL AND
+      team_members IS NULL
+    ORDER BY RAND()
+    LIMIT ${limit}
     `
   }
 
