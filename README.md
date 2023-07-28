@@ -1,5 +1,7 @@
 # OpenBook: A Public VC Database
 
+Like Pitchbook, but open. [You view the resulting dataset here.](https://www.dolthub.com/repositories/iloveitaly/venture_capital_firms)
+
 [I'm starting a new company](http://mikebian.co/bye-stripe-on-to-the-next-adventure/), but we haven't picked an idea yet. I thought it would be helpful to have a database of investors with _what they are interested in_ so we can easily reach out to folks within those firms to get feedback on our ideas. VCs have been really helpful in offering thoughtful feedback on ideas really early in the process.
 
 Open source databases have always been interesting to me. There's lots of open source code, but not much open source data. For instance, getting a list of US zip codes isn't easy. It's not clear why this is the case; sure, it's hard, but not harder than open source code. Is zip code data, or IP to location data, core to your business? Probably not. Can't be harder than building or maintaining software. If you haven't any thoughts on the mechanics here, I'd love to hear it.
