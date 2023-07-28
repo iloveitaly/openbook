@@ -1,9 +1,8 @@
-import invariant from "tiny-invariant"
 import { z } from "zod"
 
-import { OpenAI } from "langchain/llms/openai"
 import { StructuredOutputParser } from "langchain/output_parsers"
 import { PromptTemplate } from "langchain/prompts"
+import { gpt3Model } from "~/lc/openai"
 
 const parser = StructuredOutputParser.fromZodSchema(
   z.object({
@@ -21,6 +20,11 @@ const parser = StructuredOutputParser.fromZodSchema(
       .array(z.string())
       .describe(
         "URL which describes a individual team member or list of team members."
+      ),
+    legalPages: z
+      .array(z.string())
+      .describe(
+        "URL for the terms of service, privacy policy, or other legal documents. Limit to two URLs."
       ),
   })
 )
@@ -40,18 +44,8 @@ interface PageRepresentation {
 }
 
 export const categorize = async (urls: PageRepresentation[]) => {
-  const openAIAPIKey = process.env.OPENAI_API_KEY
-  invariant(openAIAPIKey, "OPENAI_API_KEY is not set")
-
-  const model = new OpenAI({
-    temperature: 0,
-    // TODO should be able to use
-    verbose: true,
-    maxTokens: -1,
-    modelName: "gpt-3.5-turbo",
-    openAIApiKey: openAIAPIKey,
-  })
-
+  const model = gpt3Model()
+  debugger
   const input = await prompt.format({
     urls: JSON.stringify(urls),
   })
