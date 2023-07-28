@@ -54,13 +54,32 @@ async function processVCRow(row: RowDataPacket) {
   )
 }
 
-export const run = async () => {
+export const run = async ({
+  url,
+  limit,
+}: {
+  url: string | null
+  limit: number | null
+}) => {
   connection = await getClient()
 
-  const sqlQuery =
-    "SELECT * FROM venture_capital_firms WHERE url = 'earlybird.com'"
-  // const sqlQuery =
-  //   "SELECT * FROM venture_capital_firms WHERE scrape_categorization IS NULL ORDER BY RAND() LIMIT 1"
+  if (limit === null || limit < 1) {
+    limit = 1
+  }
+
+  let sqlQuery
+
+  if (url) {
+    sqlQuery = `SELECT * FROM venture_capital_firms WHERE url = '${url}'`
+  } else {
+    sqlQuery = `
+    SELECT * FROM venture_capital_firms
+    WHERE
+    scrape_categorization IS NULL
+    ORDER BY RAND()
+    LIMIT ${limit}
+    `
+  }
 
   const [rows] = await connection.execute<RowDataPacket[]>(sqlQuery)
 

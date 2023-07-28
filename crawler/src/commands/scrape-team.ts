@@ -13,7 +13,7 @@ async function processCategorizedRow(row: RowDataPacket) {
   let teamMemberInformation: any = []
 
   for (const teamMemberUrl of categorization.teamPages) {
-    log.info(`scraping ${teamMemberUrl}`)
+    log.info("scraping", { url: teamMemberUrl })
 
     teamMemberInformation = [
       ...(await extractTeamMemberInformation(teamMemberUrl)),
@@ -29,13 +29,33 @@ async function processCategorizedRow(row: RowDataPacket) {
   )
 }
 
-export const run = async () => {
+export const run = async ({
+  url,
+  limit,
+}: {
+  url: string | null
+  limit: number | null
+}) => {
   connection = await getClient()
 
-  const sqlQuery =
-    " SELECT * FROM venture_capital_firms WHERE url = 'earlybird.com'"
-  // const sqlQuery =
-  //   "SELECT * FROM venture_capital_firms WHERE scrape_categorization IS NOT NULL AND team_members IS NULL ORDER BY RAND() LIMIT 1"
+  // use a limit default of 1
+  if (limit === null || limit < 1) {
+    limit = 1
+  }
+
+  let sqlQuery
+
+  if (url) {
+    sqlQuery = `SELECT * FROM venture_capital_firms WHERE url = '${url}'`
+  } else {
+    sqlQuery = `
+    SELECT * FROM venture_capital_firms
+    WHERE
+    scrape_categorization IS NOT NULL AND
+    team_members IS NULL ORDER BY RAND() LIMIT ${limit}
+    `
+  }
+
   const [rows] = await connection.execute<RowDataPacket[]>(sqlQuery)
 
   for (const row of rows) {
