@@ -1,11 +1,37 @@
 // loop through database named `venture_capital_firms` and connect via a mySQL database connection
-import extractTeamMemberInformation from "~/lc/team"
 import { log } from "~/logging"
 import { getClient } from "~/mysql"
 
 import { RowDataPacket } from "mysql2/promise"
+import extractTeamMemberInformationFromUrl, { ScrapedPerson } from "~/lc/team"
 
 let connection: Awaited<ReturnType<typeof getClient>>
+
+function cleanTeamMemberInformation(teamMembers: ScrapedPerson[]) {
+  const cleanedTeamMembers: ScrapedPerson[] = []
+
+  for (const teamMember of teamMembers) {
+    const teamMemberName = teamMember.name
+
+    const existingTeamMember = cleanedTeamMembers.find(
+      (teamMember) => teamMember.name === teamMemberName
+    )
+
+    if (!existingTeamMember) {
+      cleanedTeamMembers.push(teamMember)
+    } else {
+      log.log("found duplicate entry", { name: teamMemberName })
+
+      existingTeamMember.linkedin =
+        existingTeamMember.linkedin || teamMember.linkedin
+      existingTeamMember.twitter =
+        existingTeamMember.twitter || teamMember.twitter
+      // TODO add additional fields
+    }
+  }
+
+  return cleanedTeamMembers
+}
 
 async function processCategorizedRow(row: RowDataPacket) {
   const categorization = row.scrape_categorization
@@ -16,16 +42,20 @@ async function processCategorizedRow(row: RowDataPacket) {
     log.info("scraping", { url: teamMemberUrl })
 
     teamMemberInformation = [
-      ...(await extractTeamMemberInformation(teamMemberUrl)),
+      ...(await extractTeamMemberInformationFromUrl(teamMemberUrl)),
       ...teamMemberInformation,
     ]
   }
 
+  const cleanedTeamMemberInformation = cleanTeamMemberInformation(
+    teamMemberInformation
+  )
+
   log.info("updating team member information")
 
   await connection.query(
-    "UPDATE venture_capital_firms SET team_members = ? WHERE url = ?",
-    [JSON.stringify(teamMemberInformation), row.url]
+    "UPDATE venture_capital_firms SET team_members = ?, scrape_team_members_at = NOW() WHERE url = ?",
+    [JSON.stringify(cleanedTeamMemberInformation), row.url]
   )
 }
 
