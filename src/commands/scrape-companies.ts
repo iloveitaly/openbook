@@ -1,9 +1,9 @@
 // loop through database named `venture_capital_firms` and connect via a mySQL database connection
 import { expandUrl } from "follow-redirect-url"
 
+import crawl from "~/crawler/main"
 import { addProtocolIfMissing } from "~/follow_url_redirect_protocols"
 import { categorize } from "~/lc/categorize"
-import crawl from "~/main"
 import { getClient } from "~/mysql"
 
 import { RowDataPacket } from "mysql2/promise"
