@@ -29,6 +29,7 @@ const parser = StructuredOutputParser.fromZodSchema(
   )
 )
 
+// NOTE this is the schema used for the `team_members` array
 // extract the type of the element of the parser zod array
 export type ScrapedPerson = z.infer<(typeof parser)["schema"]>[0]
 
@@ -154,5 +155,3 @@ async function fixTruncatedJson(model: OpenAI, invalidJsonString: string) {
   const jsonResponse = await fixParser.parse(invalidJsonString)
   return jsonResponse
 }
-
-export default extractTeamMemberInformationFromUrl

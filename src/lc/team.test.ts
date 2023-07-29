@@ -1,4 +1,4 @@
-import extractTeamMemberInformation from "~/lc/team"
+import { extractTeamMemberInformation } from "~/lc/team"
 // earlybird.com should be categorized as fake
 
 test("should handle empty content", async () => {

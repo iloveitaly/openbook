@@ -43,17 +43,16 @@ interface PageRepresentation {
   title: string
 }
 
-export const categorize = async (urls: PageRepresentation[]) => {
-  const model = gpt3Model()
-  debugger
+export async function categorize(urls: PageRepresentation[]) {
   const input = await prompt.format({
     urls: JSON.stringify(urls),
   })
+
+  debugger
+  const model = gpt3Model()
 
   const response = await model.call(input)
   const jsonResponse = await parser.parse(response)
 
   return jsonResponse
 }
-
-export default categorize

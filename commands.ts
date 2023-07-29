@@ -7,7 +7,7 @@ import scrapeTeam from "~/commands/scrape-team"
 
 const program = new Command()
 
-// Define common options.
+// common options to all commands
 const commonOptions = [
   ["-l, --limit <number>", "limit number of pages/sites to scrape"],
   ["-u, --url <string>", "url to scrape"],

@@ -2,7 +2,7 @@
 import { expandUrl } from "follow-redirect-url"
 
 import { addProtocolIfMissing } from "~/follow_url_redirect_protocols"
-import categorize from "~/lc/categorize.js"
+import { categorize } from "~/lc/categorize"
 import crawl from "~/main"
 import { getClient } from "~/mysql"
 
@@ -29,7 +29,7 @@ async function processVCRow(row: RowDataPacket) {
       error: true,
     }
   } else {
-    // save normalized url in the DB
+    // save normalized url in the DB right away
     await connection.query(
       "UPDATE venture_capital_firms SET normalized_url = ? WHERE url = ?",
       [expandedUrl, url]
@@ -37,30 +37,30 @@ async function processVCRow(row: RowDataPacket) {
 
     const urlList = await crawl(expandedUrl)
 
-    if (urlList.length === 0) {
+    if (urlList.length <= 1) {
       scrapeCategorization = {
         companyPages: [],
         teamPages: [],
         singleURL: true,
-        urls: [expandedUrl],
-      }
-    } else if (urlList.length <= 1) {
-      scrapeCategorization = {
-        companyPages: [],
-        teamPages: [],
-        singleURL: true,
-        urls: [urlList[0], expandedUrl],
+        // urlList will have at most a single entry
+        urls: [...urlList, expandedUrl],
       }
     } else {
       log.info("categorizing urls")
 
-      const categorizedUrls = await categorize(urlList as any)
+      const categorizedUrls = await categorize(urlList)
       scrapeCategorization = categorizedUrls
     }
   }
 
   await connection.query(
-    "UPDATE venture_capital_firms SET scrape_categorization_at = NOW(), scrape_categorization = ? WHERE url = ?",
+    `
+    UPDATE venture_capital_firms
+    SET
+      scrape_categorization_at = NOW(),
+      scrape_categorization = ?
+    WHERE url = ?
+    `,
     [JSON.stringify(scrapeCategorization), row.url]
   )
 }
@@ -74,6 +74,7 @@ export const run = async ({
 }) => {
   connection = await getClient()
 
+  // can we get commander to do this for us?
   if (limit === null || limit === undefined || limit < 1) {
     limit = 1
   }

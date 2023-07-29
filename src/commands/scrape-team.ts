@@ -38,6 +38,12 @@ async function processCategorizedRow(row: RowDataPacket) {
 
   let teamMemberInformation: any = []
 
+  // check if `teamPages` does not exist
+  if (!categorization) {
+    log.error("no team pages, but categorized row passed", row)
+    return
+  }
+
   for (const teamMemberUrl of categorization.teamPages) {
     log.info("scraping", { url: teamMemberUrl })
 
@@ -89,7 +95,7 @@ export const run = async ({
     `
   }
 
-  const [rows] = await connection.execute<RowDataPacket[]>(sqlQuery)
+  const [rows, fields] = await connection.execute<RowDataPacket[]>(sqlQuery)
 
   for (const row of rows) {
     await processCategorizedRow(row)
