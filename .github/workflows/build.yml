@@ -1,0 +1,32 @@
+name: Build
+on:
+  push:
+    branches:
+      - main
+
+# by default, permissions are read-only, read + write is required for git pushes
+permissions:
+  contents: write
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: ASDF Parse
+        uses: kota65535/github-asdf-parse-action@v1.1.0
+        id: versions
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "${{ steps.versions.outputs.nodejs }}"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Basic Test
+        run: |
+          pnpm install
+          tsx ./commands.tsx --help
