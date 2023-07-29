@@ -3,7 +3,7 @@ import { log } from "~/logging"
 import { getClient } from "~/mysql"
 
 import { RowDataPacket } from "mysql2/promise"
-import extractTeamMemberInformationFromUrl, { ScrapedPerson } from "~/lc/team"
+import { extractTeamMemberInformationFromUrl, ScrapedPerson } from "~/lc/team"
 
 let connection: Awaited<ReturnType<typeof getClient>>
 
@@ -96,6 +96,8 @@ export const run = async ({
   }
 
   const [rows, fields] = await connection.execute<RowDataPacket[]>(sqlQuery)
+
+  log.info("processing rows", { rows: rows.length })
 
   for (const row of rows) {
     await processCategorizedRow(row)
