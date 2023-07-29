@@ -34,4 +34,4 @@ jobs:
       - name: Basic Test
         run: |
           pnpm install
-          pnpm exec tsx ./commands.tsx --help
+          pnpm exec tsx ./commands.ts --help
