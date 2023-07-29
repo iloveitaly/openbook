@@ -1,5 +1,11 @@
 // for improved repl experience
-import "better-node-inspect"
+import("better-node-inspect")
+  .then((module) => {
+    // Use the module
+  })
+  .catch((error) => {
+    console.log("Module not found")
+  })
 
 import { Command } from "commander"
 import scrapeCompanies from "~/commands/scrape-companies"
