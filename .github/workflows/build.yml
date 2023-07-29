@@ -30,7 +30,8 @@ jobs:
           node-version: "${{ steps.versions.outputs.nodejs }}"
           cache: "pnpm"
 
+      # NOTE --frozen-lockfile is used automatically on CI with pnpm
       - name: Basic Test
         run: |
-          pnpm install --frozen-lockfile
-          tsx ./commands.tsx --help
+          pnpm install
+          pnpm exec tsx ./commands.tsx --help
