@@ -80,6 +80,57 @@ Commands:
   help [command]              display help for command
 ```
 
+## Development
+
+### Debugging
+
+One of my biggest gripes with the node ecosystem is the terrible debugging tools. As part of this project, I've been iterating on [`better-node-inspect`](https://www.npmjs.com/package/better-node-inspect):
+
+```shell
+better-node-inspect --loader tsx ./commands.ts scrape-team
+
+# or, with a specific site
+better-node-inspect --loader tsx ./commands.ts scrape-team --url playfair.vc
+```
+
+If you want to hack on `better-node-inspect` (it's still early in development) you can link the local package with:
+
+```shell
+pnpm link ~/Projects/javascript/better-node-repl
+```
+
+### Queries
+
+Some helpful SQL queries ([TablePlus](https://tableplus.com) is great for working with these):
+
+```sql
+UPDATE venture_capital_firms
+SET scrape_categorization = NULL, team_members = NULL, normalized_url = NULL, scrape_team_members_at = NULL, scrape_categorization_at = NULL;
+```
+
+Create view flattening jsonb data:
+
+```sql
+CREATE VIEW `people` AS
+SELECT
+  `name`,
+  `normalized_url`,
+  JSON_UNQUOTE(JSON_EXTRACT(`team_member`, '$.name')) AS 'person_name',
+  JSON_UNQUOTE(JSON_EXTRACT(`team_member`, '$.role')) AS 'person_role',
+  JSON_UNQUOTE(JSON_EXTRACT(`team_member`, '$.roleDescription')) AS 'person_role_description',
+  JSON_UNQUOTE(JSON_EXTRACT(`team_member`, '$.email')) AS 'person_email',
+  JSON_UNQUOTE(JSON_EXTRACT(`team_member`, '$.twitter')) AS 'person_twitter',
+  JSON_UNQUOTE(JSON_EXTRACT(`team_member`, '$.linkedin')) AS 'person_linkedin'
+FROM
+  `venture_capital_firms`,
+  JSON_TABLE(
+    `team_members`,
+    '$[*]' COLUMNS(
+      `team_member` JSON PATH '$'
+    )
+  ) AS `team_members_table`;
+```
+
 ## Design Decisions
 
 - Some sites have a query string url on the team page which just determines which person should be displayed first. In this case, there is a lot of extra text that will be processed, but there's not an easy way to determine the function of the query string so we leave it alone.

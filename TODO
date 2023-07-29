@@ -6,6 +6,13 @@
   - [ ] openai.ts started doing this, but need to finish
 - [ ] extract typing helpers into a separate file
 - [ ] don't crawl PDFs
+- [ ] should probably use a legit ORM (TypedORM?)
+
+## scraping issues
+
+- [ ] https://preludeventures.com has a `www.` version too which all the urls point to
+- [ ] https://www.felicis.com/team/tim-bertrand only finds the root url, not the subpages
+- [ ] https://playfair.vc/about.php is not categorized properly, probably need markdown content in categorization
 
 ## company information
 
@@ -25,5 +32,5 @@ What data should we get about companies via GPT?
 
 - https://github.com/mysticatea/eslint-gitignore integrate into eslint config
 - https://github.com/prettier/prettier/issues/3460#issuecomment-1596130464 integrate into prettier
-- `npm link ~/Projects/javascript/better-node-repl` https://stackoverflow.com/questions/14381898/local-dependency-in-package-json
 - stop removing imports when code is commented out
+- eslint config
