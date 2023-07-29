@@ -64,7 +64,7 @@ dependencies:
     version: 10.0.3
   rocket-reach:
     specifier: github:stainless-sdks/rocket-reach-node
-    version: git@github.com+stainless-sdks/rocket-reach-node/d83150f57575584de9d4b216999f4cf8873f6ebd
+    version: git/github.com+stainless-sdks/rocket-reach-node/d83150f57575584de9d4b216999f4cf8873f6ebd
   tiny-invariant:
     specifier: ^1.3.1
     version: 1.3.1
@@ -96,7 +96,7 @@ devDependencies:
     version: 20.4.5
   better-node-inspect:
     specifier: ^0.1.0
-    version: 0.1.0
+    version: link:../javascript/better-node-inspect
   eslint:
     specifier: ^8.46.0
     version: 8.46.0
@@ -1491,11 +1491,6 @@ packages:
 
   /base64-js@1.5.1:
     resolution: {integrity: sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==}
-
-  /better-node-inspect@0.1.0:
-    resolution: {integrity: sha512-Jyn8CIeuV4K5FWgLim9Jf4lEfzeA3hvPxotVq1e6paiiKuhbv6t5y8Gx0atPKXHbBBqnmOu8eVtzhA9YreeUCA==}
-    hasBin: true
-    dev: true
 
   /binary-extensions@2.2.0:
     resolution: {integrity: sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==}
@@ -6326,7 +6321,7 @@ packages:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
     dev: false
 
-  git@github.com+stainless-sdks/rocket-reach-node/d83150f57575584de9d4b216999f4cf8873f6ebd:
+  git/github.com+stainless-sdks/rocket-reach-node/d83150f57575584de9d4b216999f4cf8873f6ebd:
     resolution: {commit: d83150f57575584de9d4b216999f4cf8873f6ebd, repo: git@github.com:stainless-sdks/rocket-reach-node.git, type: git}
     name: rocket-reach
     version: 0.0.1
