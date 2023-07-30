@@ -14,7 +14,7 @@ function cleanTeamMemberInformation(teamMembers: ScrapedPerson[]) {
     const teamMemberName = teamMember.name
 
     const existingTeamMember = cleanedTeamMembers.find(
-      (teamMember) => teamMember.name === teamMemberName
+      (teamMember) => teamMember.name === teamMemberName,
     )
 
     if (!existingTeamMember) {
@@ -54,14 +54,14 @@ async function processCategorizedRow(row: RowDataPacket) {
   }
 
   const cleanedTeamMemberInformation = cleanTeamMemberInformation(
-    teamMemberInformation
+    teamMemberInformation,
   )
 
   log.info("updating team member information")
 
   await connection.query(
     "UPDATE venture_capital_firms SET team_members = ?, scrape_team_members_at = NOW() WHERE url = ?",
-    [JSON.stringify(cleanedTeamMemberInformation), row.url]
+    [JSON.stringify(cleanedTeamMemberInformation), row.url],
   )
 }
 

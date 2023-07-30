@@ -9,24 +9,24 @@ const parser = StructuredOutputParser.fromZodSchema(
     nonEnglish: z
       .boolean()
       .describe(
-        "Are the titles of most of the pages in a non-English language?"
+        "Are the titles of most of the pages in a non-English language?",
       ),
     companyPages: z
       .array(z.string())
       .describe(
-        "URL which describes what the company does and what type of companies they invest in. Limit to two URLs."
+        "URL which describes what the company does and what type of companies they invest in. Limit to two URLs.",
       ),
     teamPages: z
       .array(z.string())
       .describe(
-        "URL which describes a individual team member or list of team members."
+        "URL which describes a individual team member or list of team members.",
       ),
     legalPages: z
       .array(z.string())
       .describe(
-        "URL for the terms of service, privacy policy, or other legal documents. Limit to two URLs."
+        "URL for the terms of service, privacy policy, or other legal documents. Limit to two URLs.",
       ),
-  })
+  }),
 )
 
 const formatInstructions = parser.getFormatInstructions()

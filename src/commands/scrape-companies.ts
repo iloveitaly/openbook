@@ -32,7 +32,7 @@ async function processVCRow(row: RowDataPacket) {
     // save normalized url in the DB right away
     await connection.query(
       "UPDATE venture_capital_firms SET normalized_url = ? WHERE url = ?",
-      [expandedUrl, url]
+      [expandedUrl, url],
     )
 
     const urlList = await crawl(expandedUrl)
@@ -61,7 +61,7 @@ async function processVCRow(row: RowDataPacket) {
       scrape_categorization = ?
     WHERE url = ?
     `,
-    [JSON.stringify(scrapeCategorization), row.url]
+    [JSON.stringify(scrapeCategorization), row.url],
   )
 }
 

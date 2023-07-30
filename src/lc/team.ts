@@ -25,8 +25,8 @@ const parser = StructuredOutputParser.fromZodSchema(
       email: z.string().describe("Email of the team member"),
       twitter: z.string().describe("Twitter url of the team member"),
       linkedin: z.string().describe("LinkedIn url of the team member"),
-    })
-  )
+    }),
+  ),
 )
 
 // NOTE this is the schema used for the `team_members` array
@@ -38,7 +38,7 @@ const formatInstructions = parser.getFormatInstructions()
 const prompt = new PromptTemplate({
   // this prompt is really important! Without explicit instructions it will return garbage stuff
   template:
-    "This webpage, formatted as markdown, could contain information on one or more team members. If you cannot find any team members, respond with an empty array.\n```json\n{pageContents}\n```\n\n{format_instructions}",
+    "This webpage, formatted as markdown, could contain information on one or more team members. If you cannot find any team members, respond with an empty array; do not make up fake people.\n```markdown\n{pageContents}\n```\n\n{format_instructions}",
   inputVariables: ["pageContents"],
   partialVariables: { format_instructions: formatInstructions },
 })
@@ -71,7 +71,7 @@ export async function extractTeamMemberInformationFromUrl(url: string) {
 }
 
 export async function extractTeamMemberInformation(
-  pageContentsAsMarkdown: string
+  pageContentsAsMarkdown: string,
 ) {
   // TODO refactor once the typing change is in place
   const openAIAPIKey = process.env.OPENAI_API_KEY
@@ -133,6 +133,7 @@ export async function extractTeamMemberInformation(
     const responseWithCodeblock = await model.call(renderedPrompt)
     let jsonResponse: Awaited<ReturnType<typeof parser.parse>>
 
+    debugger
     try {
       jsonResponse = await parser.parse(responseWithCodeblock)
     } catch (e) {

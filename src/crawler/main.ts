@@ -34,7 +34,7 @@ export default async function crawl(initialUrl: string) {
       // proxyConfiguration: new ProxyConfiguration({ proxyUrls: ['...'] }),
       requestHandler: createRouter(),
     },
-    config
+    config,
   )
 
   await crawler.addRequests(startUrls)
