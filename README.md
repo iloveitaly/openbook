@@ -17,10 +17,10 @@ I ran into [rehype](https://unifiedjs.com/explore/package/rehype/) as part of th
 
 ## Goals
 
-- Completely open source database
+- Completely open source database of venture capital firms
 - Make it easy for people to contribute to the database
-- Database of companies with some helpful metadata about those companies that can be easily queried
-- Database of investors within those companies with as much publicly available contact information sourced as possible
+- Database of firms with some helpful metadata about those companies that can be easily queried
+- Database of investors within those firms with as much publicly available contact information sourced as possible
 
 ## Development
 
@@ -62,6 +62,19 @@ Scrape a specific company:
 ```shell
 tsx commands.ts scrape-companies --url 'a16z.com'
 tsx commands.ts scrape-team --url 'a16z.com'
+```
+
+Scrape a random set:
+
+```shell
+tsx commands.ts scrape-companies --limit 5
+tsx commands.ts scrape-team --limit 5
+```
+
+Or, import a list:
+
+```shell
+
 ```
 
 [Create a dolthub PR](https://www.dolthub.com/blog/2022-01-19-making-your-first-pr/).
@@ -138,7 +151,7 @@ FROM
 
 ## Scraping with GPT
 
-This has some interesting code which uses langchain + openai to return JSON results from a webpage by converting the raw HTML to simplified markdown. It's amazing how well this works; so many interesting opportunities here.
+This repo has some interesting code which uses langchain + openai to return JSON results from a webpage by converting the raw HTML to simplified markdown. It's amazing how well this works; so many interesting opportunities here. [Some more of my thoughts on this.](http://mikebian.co/scraping-the-web-with-openai/)
 
 ## Existing Lists & SaaS
 
