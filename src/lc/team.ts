@@ -1,4 +1,3 @@
-import invariant from "tiny-invariant"
 import { z } from "zod"
 
 import { calculateMaxTokens } from "langchain/base_language"
@@ -11,6 +10,7 @@ import {
 import { PromptTemplate } from "langchain/prompts"
 
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter"
+import { gpt3Model } from "~/lc/openai.js"
 import { log } from "../logging.js"
 import { convertToMarkdown } from "../markdown.js"
 
@@ -73,19 +73,7 @@ export async function extractTeamMemberInformationFromUrl(url: string) {
 export async function extractTeamMemberInformation(
   pageContentsAsMarkdown: string,
 ) {
-  // TODO refactor once the typing change is in place
-  const openAIAPIKey = process.env.OPENAI_API_KEY
-  invariant(openAIAPIKey, "OPENAI_API_KEY is not set")
-
-  // TODO should be centralized?
-  const model = new OpenAI({
-    temperature: 0,
-    // TODO should be able to use
-    verbose: true,
-    maxTokens: -1,
-    modelName: "gpt-3.5-turbo-16k",
-    openAIApiKey: openAIAPIKey,
-  })
+  const model = await gpt3Model({ modelName: "gpt-3.5-turbo-16k" })
 
   type ExpandedParams = ExpandRecursively<
     ConstructorParameters<typeof OpenAI>[0]

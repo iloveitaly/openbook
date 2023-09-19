@@ -48,8 +48,7 @@ export async function categorize(urls: PageRepresentation[]) {
     urls: JSON.stringify(urls),
   })
 
-  debugger
-  const model = gpt3Model()
+  const model = await gpt3Model({ content: input })
 
   const response = await model.call(input)
   const jsonResponse = await parser.parse(response)
