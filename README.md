@@ -71,7 +71,15 @@ tsx commands.ts scrape-companies --limit 5
 tsx commands.ts scrape-team --limit 5
 ```
 
-Or, import a list:
+Scrape a random set every day:
+
+```shell
+watch -n 86400 '
+tsx commands.ts scrape-companies --limit 2 2>&1 | tee -a ./scrape-companies.log;
+tsx commands.ts scrape-team --limit 2 2>&1 | tee -a ./scrape-team.log;
+'
+```
+
 
 ```shell
 

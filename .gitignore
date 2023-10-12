@@ -10,3 +10,4 @@ storage
 
 .node_repl_history
 .sqlhistory
+*.log
