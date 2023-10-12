@@ -23,7 +23,7 @@ export async function gpt3Model({
     const modelTokenLimit = await calculateMaxTokens({
       prompt: content,
       // TODO TiktokModelName
-      selectedModelName: gpt3Small,
+      modelName: gpt3Small,
     })
 
     if (modelTokenLimit < 0) {
