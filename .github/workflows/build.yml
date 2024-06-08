@@ -18,7 +18,7 @@ jobs:
           fetch-depth: 0
 
       - name: ASDF Parse
-        uses: kota65535/github-asdf-parse-action@v1.1.0
+        uses: kota65535/github-asdf-parse-action@v2.0.0
         id: versions
 
       - uses: pnpm/action-setup@v2
