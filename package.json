@@ -9,7 +9,7 @@
   "license": "MIT",
   "dependencies": {
     "commander": "^11.0.0",
-    "crawlee": "^3.5.7",
+    "crawlee": "^3.18.1",
     "follow-redirect-url": "github:iloveitaly/follow-redirect-url#custom",
     "hast-util-is-element": "^3.0.0",
     "langchain": "^0.0.166",
