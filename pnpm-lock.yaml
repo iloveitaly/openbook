@@ -82,8 +82,8 @@ importers:
         version: 3.25.76
     devDependencies:
       '@apify/tsconfig':
-        specifier: ^0.1.0
-        version: 0.1.2
+        specifier: ^0.2.0
+        version: 0.2.0
       '@trivago/prettier-plugin-sort-imports':
         specifier: ^4.2.0
         version: 4.3.0(prettier@3.9.6)(supports-color@7.2.0)
@@ -161,8 +161,8 @@ packages:
   '@apify/timeout@0.4.13':
     resolution: {integrity: sha512-hp136mRYdFUL5NGC/+mHGOfGulYamN5iANchmaP5VsrzIcvx0dNa6Z9K1pEcU+clc0QwGMoB5XaIPJGXMqYKlA==}
 
-  '@apify/tsconfig@0.1.2':
-    resolution: {integrity: sha512-9dzEI1ZQ5+iM0k0fmPJrpdSSPUolVdeI1nDGFZMjD9UabTmIvjQrzui+1a25uy913AUEBrKTojEPj87pU9/Ekg==}
+  '@apify/tsconfig@0.2.0':
+    resolution: {integrity: sha512-0i6rF+hgXw6mQXhENYNTnP+Yo4WY38d698k/pk4rIpdCx/sSuEprR2N5WdtMaN628vCB+aZjff0jPN2EnQYtjQ==}
 
   '@apify/utilities@2.35.10':
     resolution: {integrity: sha512-XZ04ZjYncbvEcr+Vrwml/xHWP+EpjPdNfK4xUeL5jGZYTYMoIKhP01aUSUaFM4qOdD5L6MKsnRFBsxVQoeL6Fw==}
@@ -4133,7 +4133,7 @@ snapshots:
 
   '@apify/timeout@0.4.13': {}
 
-  '@apify/tsconfig@0.1.2': {}
+  '@apify/tsconfig@0.2.0': {}
 
   '@apify/utilities@2.35.10':
     dependencies:
