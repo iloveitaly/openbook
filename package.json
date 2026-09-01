@@ -17,7 +17,7 @@
     "loglevel-plugin-prefix": "^0.8.4",
     "mdast-util-from-markdown": "^2.0.0",
     "mdast-util-gfm-table": "^2.0.0",
-    "mysql2": "^3.6.1",
+    "mysql2": "^3.24.2",
     "playwright": "^1.39.0",
     "rehype-parse": "^9.0.0",
     "rehype-remark": "^10.0.0",
