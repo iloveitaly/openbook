@@ -35,7 +35,7 @@
   },
   "devDependencies": {
     "@apify/tsconfig": "^0.2.0",
-    "@trivago/prettier-plugin-sort-imports": "^4.2.0",
+    "@trivago/prettier-plugin-sort-imports": "^6.0.2",
     "@types/eslint-config-prettier": "^6.11.1",
     "@types/node": "^26.6.3",
     "@typescript-eslint/eslint-plugin": "^6.7.5",
